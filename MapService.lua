@@ -31,6 +31,12 @@ local BiomeTypes = require(Classes.HexGrid.BiomeTypes)
 ----------| Types |----------
 
 ----------| Constants |----------
+local _OFFSETS = {
+	{1, 0}, {1, 1}, --Down, down and right
+	{0, -1}, {0, 1}, --Left and right
+	{-1, 0}, {-1, 1}, --Up, up and right
+	{0,0} --Current Grid
+}
 
 ----------| Private Variables |----------
 local _inStudio = RunService:IsStudio()
@@ -42,13 +48,6 @@ local _animateGeneration = not _inStudio
 
 local _mapGrid = {}
 local _generating = false
-
-local _offsets = {
-	{1, 0}, {1, 1}, --Down, down and right
-	{0, -1}, {0, 1}, --Left and right
-	{-1, 0}, {-1, 1}, --Up, up and right
-	{0,0} --Current Grid
-}
 
 ----------| Public Variables |----------
 
@@ -130,7 +129,7 @@ local function _getSurroundingGridsAverageHeight(rowIndex, columnIndex)
 	
 	--Loops through the offsets table which stores the relative position
 	--	of surrounding grids.
-	for _, offset in _offsets do
+	for _, offset in _OFFSETS do
 		local neighborRow = rowIndex + offset[1]
 		local neighborCol = columnIndex + offset[2]
 
@@ -187,7 +186,7 @@ end
 local function _hasSurroundingNil(rowIndex, columnIndex)
 	--Loops through the offsets which stores the relative position of grids around
 	--	the specified grid.
-	for _, offset in ipairs(_offsets) do
+	for _, offset in ipairs(_OFFSETS) do
 		local neighborRow = rowIndex + offset[1]
 		local neighborCol = columnIndex + offset[2]
 
@@ -279,7 +278,7 @@ end
 --Checks if a specific grid has a neighboring grid with a specific biome type.
 --This is useful for determining if something should be a rocky beach, or similar.
 local function _hasNeighboringTileOfBiome(rowIndex, columnIndex, biome)
-	for _, offset in _offsets do 
+	for _, offset in _OFFSETS do 
 		local neighborRow = rowIndex + offset[1]
 		local neighborCol = columnIndex + offset[2]
 
